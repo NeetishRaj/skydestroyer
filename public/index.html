@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Save the plane</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="keywords" content="game, sky destroyer"/>
+  <meta name="description" content="Sky destroyer is a full fledged multiplayer web based game to play with your friends, developed by Bobbie and Morpheus"/>
+  <meta name="subject" content="Multiplayer online Game">
+  <meta name="author" content="Morpheus, morpheus.alive@gmail.com">
+  <meta name="copyright" content="Play and Learn">
+  <meta name="url" content="https://sky-destroyer.herokuapp.com">
+  <style media="screen">
+    body {
+      background: skyblue;
+      margin: 0;
+      /* overflow: hidden; */
+    }
+
+    .page {
+      border: 5px solid rgba(10,10,10,0.6);
+      border-radius: 10px;
+      box-sizing: border-box;
+      height: 100vh;
+      padding: 10px;
+      text-align: center;
+      width: 100vw;
+    }
+
+    .pageDiv{
+      border: 5px solid rgba(10,10,10,0.6);
+      border-radius: 10px;
+      box-sizing: border-box;
+      height: 45vh;
+      margin:10px auto;
+      padding: 10px;
+      width: 90vw;
+    }
+
+  </style>
+</head>
+
+<body>
+<main>
+  <div class="page firstPage">
+    <h1>SKY DEFENDER</h1>
+    <button type="button" id="enterGame" name="enterGame" onclick="smoothScroll(document.querySelector('.secondPage'))">Enter Game</button>
+  </div>
+  <div class="page secondPage">
+    <div class="loginPart pageDiv" onclick="smoothScroll(document.querySelector('.loginPage'))">
+      <h2>Login</h2>
+      <div class="">
+        <p>Save your High score</p>
+        <p>Game progress will be saved</p>
+        <p>Comments &amp; Feedbacks enabled</p>
+      </div>
+    </div>
+    <div class="casualPart pageDiv" onclick="smoothScroll(document.querySelector('.homePage'))">
+      <h2>Play Casual</h2>
+      <div class="">
+        <p>Dont want login Drama</p>
+        <p>Just let me play!</p>
+      </div>
+    </div>
+  </div>
+  <div class="page loginPage">
+    <div class="login pageDiv">
+      <h3>Login</h3>
+      <label for="username">Username</label>
+      <input type="text" name="username" value="">
+      <label for="password">Password</label>
+      <input type="password" name="password" value="">
+      <button type="button" name="login" id="login">Login</button>
+    </div>
+    <div class="register pageDiv" onclick="smoothScroll(document.querySelector('.registerPage'))">
+      <h3>Not registered yet?</h3>
+    </div>
+  </div>
+  <div class="page registerPage">
+    <h3>Register</h3>
+    <form class="" action="index.html" method="post">
+      <label for="name">Name</label>
+      <input type="text" name="name" value="">
+      <p class="errorPara" id="nameError">Name must be atleast 3 characters and alphanumeric only</p>
+      <label for="username">Username</label>
+      <input type="text" name="username" value="">
+      <p class="errorPara" id="usernameError">Username must be 5-20 characters and alphanumeric only</p>
+      <label for="password">Password</label>
+      <input type="password" name="password" value="">
+      <p class="errorPara" id="passwordError">Password must be 5-20 characters only</p>
+      <input type="submit" name="register" value="Register">
+    </form>
+  </div>
+  <div class="page homePage">
+    <h3>SKY DEFENDER</h3>
+    <div class="homeButton">
+      <button type="button" name="newGame" onclick="smoothScroll(document.querySelector('.gamePage'))">New Game</button>
+    </div>
+    <div class="homeButton">
+      <button type="button" name="continue" onclick="smoothScroll(document.querySelector('.gamePage'))">Continue</button>
+    </div>
+    <div class="homeButton">
+      <button type="button" name="newGame" onclick="smoothScroll(document.querySelector('.settingPage'))">Settings</button>
+    </div>
+    <div class="homeButton">
+      <button type="button" name="help" onclick="smoothScroll(document.querySelector('.helpPage'))">Help</button>
+    </div>
+    <div class="homeButton">
+      <button type="button" name="about" onclick="smoothScroll(document.querySelector('.aboutPage'))">About</button>
+    </div>
+  </div>
+  <div class="page settingPage">
+    <h2>Setting</h2>
+    <div class="pageDiv">
+      <div class="">
+        Sounds
+        <input type="radio" name="on">
+        <label for="on">ON</label>
+        <input type="radio" name="off">
+        <label for="off">OFF</label>
+      </div>
+    </div>
+    <button type="button" name="goBack" onclick="smoothScroll(document.querySelector('.homePage'))">Go Back</button>
+  </div>
+  <div class="page helpPage">
+    <h2>Help</h2>
+    <h3>Instructions</h3>
+    <ul>
+      <li>Protect the plane from enemies using the circular controller</li>
+      <li>Use Save &amp; exit to save game progress( works only for registered players)</li>
+      <li>Kill enemies when you acquire a Gun</li>
+      <li>Dont forget to catch shield, weapons and fuel</li>
+    </ul>
+    <button type="button" name="goBack" onclick="smoothScroll(document.querySelector('.homePage'))">Go Back</button>
+  </div>
+  <div class="page aboutPage">
+    <div class="">
+      <h2>About</h2>
+      <p>This game was created by Bobbie for fellow Sololearners</p>
+      <p>When the game got big then Morpheus (Bobbie's best friend) joined in on the development</p>
+    </div>
+    <div class="">
+      <h4>Dear Sololearners</h4>
+      <p>It is still under progress and any feedback from the community will be highly appreciated</p>
+      <p>We love making games if you have some cool ideas then we are just one messgae away from teaming up</p>
+      <button type="button" name="goBack" onclick="smoothScroll(document.querySelector('.homePage'))">Go Back</button>
+    </div>
+  </div>
+  <div class="page gamePage">
+
+  </div>
+</main>
+<script type="text/javascript">
+
+/*###### PAGE NAVIGATION FUNCTIONS STARTS ######*/
+window.smoothScroll = function(target) {
+    var scrollContainer = target;
+    do { //find scroll container
+        scrollContainer = scrollContainer.parentNode;
+        if (!scrollContainer) return;
+        scrollContainer.scrollTop += 1;
+    } while (scrollContainer.scrollTop == 0);
+
+    var targetY = 0;
+    do { //find the top of target relatively to the container
+        if (target == scrollContainer) break;
+        targetY += target.offsetTop;
+    } while (target = target.offsetParent);
+
+    scroll = function(c, a, b, i) {
+        i++; if (i > 30) return;
+        c.scrollTop = a + (b - a) / 30 * i;
+        setTimeout(function(){ scroll(c, a, b, i); }, 2);
+    }
+    // start scrolling
+    scroll(scrollContainer, scrollContainer.scrollTop, targetY, 0);
+}
+/*###### PAGE NAVIGATION FUNCTIONS ENDS ######*/
+
+
+
+// var httpRequest;
+// document.getElementById("enterGame").addEventListener('click', makeRequest);
+//
+// function makeRequest() {
+//   httpRequest = new XMLHttpRequest();
+//
+//   if (!httpRequest) {
+//     alert('Giving up :( Cannot create an XMLHTTP instance');
+//     return false;
+//   }
+//   httpRequest.open('POST', 'http://localhost:8080/login');
+//     httpRequest .setRequestHeader('Content-Type', 'application/json');
+//   httpRequest.onload = alertContents;
+//   httpRequest.send(JSON.stringify({"password": "Raj"}));
+// }
+//
+// function alertContents() {
+//   if (httpRequest.readyState === XMLHttpRequest.DONE) {
+//     if (httpRequest.status === 200) {
+//       alert(httpRequest.responseText);
+//     } else {
+//       alert('There was a problem with the request.');
+//     }
+//   }
+// }
+
+
+</script>
+</body>
+</html>

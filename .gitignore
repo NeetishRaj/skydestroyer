@@ -2,3 +2,4 @@ temp/
 user/
 node_modules/
 config.js
+.eslintrc.json
