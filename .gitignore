@@ -1,5 +1,5 @@
 temp/
-user/
+data/
 node_modules/
 config.js
 .eslintrc.json
