@@ -1,8 +1,32 @@
 const fs = require('fs');
 const path = require('path');
 
-
+// The path string for the user.json file
 const userPath = path.join(__dirname, "data", "user.json");
+
+
+// The default values and structure object of user
+const defaultUser = {
+  "comments": [],
+  "highScore": 0,
+  "lastProgress": 0,
+  "name": "",
+  "password": "",
+  "sound": true,
+  "username": ""
+};
+
+
+// The regex of input fields for server side validation
+const userRegex = {
+  "comments": /.+/g,
+  "highScore": /^\d+$/,
+  "lastProgress": /^\d+$/,
+  "name": /^[a-zA-Z ]{3,20}$/,
+  "password": /^.{5,20}$/,
+  "sound": /^(true|false)$/,
+  "username": /^[\w]{5,12}$/
+};
 
 
 /**
@@ -40,7 +64,6 @@ const writeToFile = function(data, callback){
 const isUserExist = function(username, callback){
   fs.readFile(userPath, "utf-8", (readErr, data) => {
       if (readErr){
-
         // Since there are errors in reading the file so data dont exist
         return callback(false);
       }
@@ -50,7 +73,6 @@ const isUserExist = function(username, callback){
         find((item) => item.username === username);
 
       if (typeof user === "undefined"){
-
         return callback(false);
       }
 
@@ -71,6 +93,7 @@ const isUserExist = function(username, callback){
  */
 const insertUser = function(userInfo, callback){
   let users = [];
+  const userObj = Object.assign({}, defaultUser, userInfo);
 
   fs.readFile(userPath, "utf-8", (readErr, data) => {
     if (readErr){
@@ -88,11 +111,11 @@ const insertUser = function(userInfo, callback){
                * Since the data folder already exists hence we ll proceed
                * with creating the file, like we would do without error
                */
-              users.push(userInfo);
+              users.push(userObj);
               writeToFile(JSON.stringify(users, null, 2), callback);
             }
           } else {
-            users.push(userInfo);
+            users.push(userObj);
             writeToFile(JSON.stringify(users, null, 2), callback);
           }
         });
@@ -102,11 +125,11 @@ const insertUser = function(userInfo, callback){
 
       users = JSON.parse(data || "[]");
       const userMatch = users.
-        find((item) => item.username === userInfo.username);
+        find((item) => item.username === userObj.username);
 
       if (typeof userMatch === "undefined"){
         // Username doesnt exists so we can add new user
-        users.push(userInfo);
+        users.push(userObj);
         writeToFile(JSON.stringify(users, null, 2), callback);
 
       } else {
@@ -117,7 +140,7 @@ const insertUser = function(userInfo, callback){
       }
     }
 
-    return userInfo;
+    return userObj;
   // End of readFIle()
   });
 }
@@ -162,32 +185,59 @@ const updateUser = function(username, newUserData, callback){
   });
 }
 
-insertUser({"username": "baba"}, (data) => {
-  console.log(data.message);
-});
-isUserExist("bada", (isExists) => {
 
-  if(isExists){
-    console.log(isExists);
-    console.log("exists");
-  } else {
-    console.log("doesnt exists");
-  }
-});
+/**
+ * Returns an exhaustive list of all the users Name and highscore in decreasing
+ * order scraped from the main collection
+ * @param {Function} callback to help perform the next task asynchronously.
+ * @returns {Array} an array of objects with Names and highScores properties
+ */
+const getHighScores = function(callback){
+  fs.readFile(userPath, "utf-8", (readErr, data) => {
+      if (readErr){
 
-updateUser("gabbar", {
-  "name": "supperdaddy",
-  "score": 4545,
-  "comments":[
-    "You have done a great job",
-    "but this is not cool"
-  ]
-}, (res) => {
-  console.log(res.message);
-})
+        // Since there are errors in reading the file so data dont exist
+        return callback({
+          "message": "Cant provide high scores since cant access Database",
+          "success": false
+        });
+      }
+
+      // Now map-reduce the array to return only names and highScores
+      const users = JSON.parse(data || "[]");
+      const highScoresList = users.
+        sort((first, second) => second.highScore - first.highScore).
+        reduce((acc, item) => {
+          acc.push({
+            "highScore": item.highScore,
+            "name": item.name
+          });
+
+          return acc;
+        }, []);
+
+
+      if (highScoresList.length === 0){
+        // Collection is empty
+        return callback({
+          "message": "No High scores list, since Database is empty",
+          "success": false
+        }, highScoresList);
+      }
+
+      // If we there are non-zero user documents in collection
+      callback({
+        "message": "List of high Scores returned successfully",
+        "success": true
+      }, highScoresList);
+
+      return highScoresList;
+  });
+}
 
 module.exports = {
+  getHighScores,
   insertUser,
   isUserExist,
   updateUser
-}
+};
