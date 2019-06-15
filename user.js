@@ -249,7 +249,7 @@ const getHighScores = function(callback){
       if (highScoresList.length === 0){
         // Collection is empty
         return callback({
-          "message": "No High scores list, since Database is empty",
+          "message": "No High scores list as no players registered yet",
           "success": false
         }, highScoresList);
       }

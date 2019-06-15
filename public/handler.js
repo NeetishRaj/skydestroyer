@@ -52,16 +52,55 @@ var RH = (function(){
           }
         })
         .catch(() => {
-          alert("Something happened in the Nodejs Server most probably, Please try again!");
+          alert("Something might have happened with your Network, Please try again!");
         })
     } else {
       alert(`Invalid ${validate.invalidKey} input, Try again!`);
     }
   }
 
+  const handleLogin = function(form){
+
+    const loginInput = {
+      username: form.elements[0].value,
+      password: form.elements[1].value
+    };
+
+    Fetch.postData('/login', loginInput)
+      .then((response) => {
+        if(response.username !== undefined){
+          smoothScroll(qs('.menuPage'));
+          window.userToken = response;
+        } else {
+          alert(response.message);
+        }
+      })
+      .catch(() => {
+        alert("Something might have happened with your Network, Please try again!");
+      })
+  }
+
+  const handleHighScore  = function(){
+    
+    Fetch.getData('/highscores')
+      .then((scoreList) => {
+        if(Array.isArray(scoreList) && scoreList.length > 0){
+          DM.createScoreList(scoreList);
+          smoothScroll(qs('.highScoresPage'));
+        } else {
+          alert(scoreList.message);
+        }
+      })
+      .catch(() => {
+        alert("Something might have happened with your Network, Please try again!");
+      })
+  }
+
 
   return {
-    handleUserRegister
+    handleUserRegister,
+    handleLogin,
+    handleHighScore
   }
-  
+
 })()

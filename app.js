@@ -12,7 +12,7 @@ const errorMessages = {
   "DNF": "Requested data not found try again please",
   "PNF": "Incorrect password entered",
   "RUNA": "Requested username is already taken so try something else",
-  "UNF": "The requested user not registered or not logged in, please try again"
+  "UNF": "Requested user is not registered, Please register first then Login"
 };
 
 app.use(cors());
@@ -26,21 +26,12 @@ app.get("/", (req, res) => {
 });
 
 
-app.post("/users/highscores", (req, res) => {
-  data.isUserExist(req.body.username, (user) => {
-    if (user){
-      data.getHighScores((dataRes, highScores) => {
-        if (dataRes.success) {
-          res.json(highScores);
-        } else {
-          res.json(dataRes);
-        }
-      });
+app.get("/highscores", (req, res) => {
+  data.getHighScores((dataRes, highScores) => {
+    if (dataRes.success) {
+      res.json(highScores);
     } else {
-      res.json({
-        "message": errorMessages.UNF,
-        "success": false
-      });
+      res.json(dataRes);
     }
   });
 });
@@ -62,7 +53,6 @@ app.post('/users', (req, res) => {
 
 
 app.post('/login', (req, res) => {
-  debug("Received POST req with PW: %o", req.body.password);
   data.isUserExist(req.body.username, (user) => {
     if (user){
       if (req.body.password === user.password){

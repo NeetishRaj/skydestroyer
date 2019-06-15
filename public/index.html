@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Save the plane</title>
+  <title>Sky Defender</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="keywords" content="game, sky destroyer"/>
-  <meta name="description" content="Sky destroyer is a full fledged multiplayer web based game to play with your friends, developed by Bobbie and Morpheus"/>
+  <meta name="keywords" content="game, sky defender"/>
+  <meta name="description" content="Sky defender is a full fledged multiplayer web based game to play with your friends, developed by Bobbie and Morpheus"/>
   <meta name="subject" content="Multiplayer online Game">
   <meta name="author" content="Morpheus, morpheus.alive@gmail.com">
-  <meta name="copyright" content="Play and Learn">
+  <meta name="copyright" content="Morpheus and Bobbie">
   <meta name="url" content="https://sky-defender.herokuapp.com">
   <script src="./fetch-api.js"></script>
+  <script src="./dom-manipulation.js"></script>
   <script src="./handler.js"></script>
   <style media="screen">
     body {
@@ -45,10 +46,10 @@
 <main>
   <div class="page firstPage">
     <h1>SKY DEFENDER</h1>
-    <button type="button" id="enterGame" name="enterGame" onclick="smoothScroll(document.querySelector('.secondPage'))">Enter Game</button>
+    <button type="button" id="enterGame" name="enterGame" onclick="smoothScroll(qs('.secondPage'))">Enter Game</button>
   </div>
   <div class="page secondPage">
-    <div class="loginPart pageDiv" onclick="smoothScroll(document.querySelector('.loginPage'))">
+    <div class="loginPart pageDiv" onclick="smoothScroll(qs('.loginPage'))">
       <h2>Login</h2>
       <div class="">
         <p>Save your High score</p>
@@ -56,7 +57,7 @@
         <p>Comments &amp; Feedbacks enabled</p>
       </div>
     </div>
-    <div class="casualPart pageDiv" onclick="smoothScroll(document.querySelector('.homePage'))">
+    <div class="casualPart pageDiv" onclick="smoothScroll(qs('.menuPage'))">
       <h2>Play Casual</h2>
       <div class="">
         <p>Dont want login Drama</p>
@@ -67,15 +68,15 @@
   <div class="page loginPage">
     <div class="login pageDiv">
       <h3>Login</h3>
-      <form class="" name="loginForm" onsubmit="handleUserLogin(e)" >
+      <form class="" name="loginForm">
         <label for="loginUsername">Username</label>
         <input type="text" name="loginUsername" value="">
         <label for="loginPassword">Password</label>
         <input type="password" name="loginPassword" value="" autocomplete> 
-        <button type="button" name="login" id="login" onclick="login()">Login</button>
+        <button type="button" name="login" id="login" onclick="RH.handleLogin(this.parentElement)">Login</button>
       </form>
     </div>
-    <div class="register pageDiv" onclick="smoothScroll(document.querySelector('.registerPage'))">
+    <div class="register pageDiv" onclick="smoothScroll(qs('.registerPage'))">
       <h3>Not registered yet?</h3>
     </div>
   </div>
@@ -91,37 +92,53 @@
       <label for="password">Password</label>
       <input type="password" name="password" value="" autocomplete>
       <p class="errorPara" id="passwordError">Password must be 5-20 characters only</p>
-      <input type="button" name="cancel" value="Cancel" onclick="smoothScroll(document.querySelector('.secondPage'))">
+      <input type="button" name="cancel" value="Cancel" onclick="smoothScroll(qs('.secondPage'))">
       <input type="button" name="register" value="Register"  onclick="RH.handleUserRegister(this.parentElement)">
     </form>
   </div>
-  <div class="page homePage">
+  <div class="page menuPage">
     <h3>SKY DEFENDER</h3>
-    <div class="homeButton">
-      <button type="button" name="newGame" onclick="smoothScroll(document.querySelector('.gamePage'))">New Game</button>
+    <div class="menuButton">
+      <button type="button" name="newGame" onclick="smoothScroll(qs('.gamePage'))">New Game</button>
     </div>
-    <div class="homeButton">
-      <button type="button" name="continue" onclick="smoothScroll(document.querySelector('.gamePage'))">Continue</button>
+    <div class="menuButton">
+      <button type="button" name="continue" onclick="smoothScroll(qs('.gamePage'))">Continue</button>
     </div>
-    <div class="homeButton">
-      <button type="button" name="highScores" onclick="smoothScroll(document.querySelector('.highScoresPage'))">High Scores</button>
+    <div class="menuButton">
+      <button type="button" name="highScores" onclick="RH.handleHighScore()">High Scores</button>
     </div>
-    <div class="homeButton">
-      <button type="button" name="newGame" onclick="smoothScroll(document.querySelector('.settingPage'))">Settings</button>
+    <div class="menuButton">
+      <button type="button" name="newGame" onclick="smoothScroll(qs('.settingPage'))">Settings</button>
     </div>
-    <div class="homeButton">
-      <button type="button" name="help" onclick="smoothScroll(document.querySelector('.helpPage'))">Help</button>
+    <div class="menuButton">
+      <button type="button" name="help" onclick="smoothScroll(qs('.helpPage'))">Help</button>
     </div>
-    <div class="homeButton">
-      <button type="button" name="about" onclick="smoothScroll(document.querySelector('.aboutPage'))">About</button>
+    <div class="menuButton">
+      <button type="button" name="about" onclick="smoothScroll(qs('.aboutPage'))">About</button>
     </div>
   </div>
   <div class="page highScoresPage">
     <h2>High Scores</h2>
-    <ol>
-      <li> <span id="hsName">Morpheus</span> <span id="hsScore">20000</span> miles</li>
-      <button type="button" name="currentHighScore">Get Realtime Ranking</button>
-    </ol>
+    <button type="button" name="currentHighScore" onclick="RH.handleHighScore()">Refresh</button>
+    <button type="button" name="goBack" onclick="smoothScroll(qs('.menuPage'))">Go Back</button>
+    <div>
+      <table id="highScoreListTable">
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Name</th>
+            <th>Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Morpheus</td>
+            <td>20000</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
   <div class="page settingPage">
     <h2>Setting</h2>
@@ -134,7 +151,7 @@
         <label for="off">OFF</label>
       </div>
     </div>
-    <button type="button" name="goBack" onclick="smoothScroll(document.querySelector('.homePage'))">Go Back</button>
+    <button type="button" name="goBack" onclick="smoothScroll(qs('.menuPage'))">Go Back</button>
   </div>
   <div class="page helpPage">
     <h2>Help</h2>
@@ -145,7 +162,7 @@
       <li>Kill enemies when you acquire a Gun</li>
       <li>Dont forget to catch shield, weapons and fuel</li>
     </ul>
-    <button type="button" name="goBack" onclick="smoothScroll(document.querySelector('.homePage'))">Go Back</button>
+    <button type="button" name="goBack" onclick="smoothScroll(qs('.menuPage'))">Go Back</button>
   </div>
   <div class="page aboutPage">
     <div class="">
@@ -157,7 +174,7 @@
       <h4>Dear Sololearners</h4>
       <p>It is still under progress and any feedback from the community will be highly appreciated</p>
       <p>We love making games if you have some cool ideas then we are just one messgae away from teaming up</p>
-      <button type="button" name="goBack" onclick="smoothScroll(document.querySelector('.homePage'))">Go Back</button>
+      <button type="button" name="goBack" onclick="smoothScroll(qs('.menuPage'))">Go Back</button>
     </div>
   </div>
   <div class="page gamePage">
@@ -166,7 +183,8 @@
 </main>
 <script type="text/javascript">
 
-/*###### PAGE NAVIGATION FUNCTIONS STARTS ######*/
+/*###### CLIENT SIDE UTILITY FUNCTIONS STARTS ######*/
+
 window.smoothScroll = function(target) {
     var scrollContainer = target;
     do { //find scroll container
@@ -189,36 +207,15 @@ window.smoothScroll = function(target) {
     // start scrolling
     scroll(scrollContainer, scrollContainer.scrollTop, targetY, 0);
 }
-/*###### PAGE NAVIGATION FUNCTIONS ENDS ######*/
 
-
-/*###### CLIENT SIDE VALIDATION STARTS ######*/
-
-/*###### CLIENT SIDE VALIDATION ENDS ######*/
-
-/*###### CLIENT SIDE UTILITY FUNCTIONS STARTS ######*/
 function id(id){
   return document.getElementById(id);
 }
-/*###### CLIENT SIDE UTILITY FUNCTIONS ENDS ######*/
-function login(){
-  var username  = id('loginUsername').value;
-  var password = id('loginPassword').value;
 
-  if(!isValidInput(username, "username")){
-    alert("Incorrect username, must be 5-12 alphanumeric only");
-    return false;
-  }
-
-  if(!isValidInput(password, "password")){
-    alert("Incorrect password, must be 5-20 characters");
-    return false;
-  }
+function qs(cssSelector){
+  return document.querySelector(cssSelector);
 }
-
-
-
-
+/*###### CLIENT SIDE UTILITY FUNCTIONS ENDS ######*/
 
 </script>
 </body>
