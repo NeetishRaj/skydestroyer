@@ -30,6 +30,28 @@ const userRegex = {
 
 
 /**
+ * Validates the data received on the server side
+ * Validation guidelines alre
+ * 1. look for unwanted object keys
+ * 2. match each input with its corresponding regex
+ * @param {Object} userInfo the user object that needs to be validated.
+ * @returns {Boolean} returns true or false based on the validation
+ */
+const validateUserInfo = function(userInfo){
+
+  for (const key1 in userInfo) {
+    if (!Object.keys(defaultUser).includes(key1) ||
+      !userRegex[key1].test(userInfo[key1])) {
+
+      return false;
+    }
+  }
+
+  return true;
+}
+
+
+/**
  * A private method that actually inserts the given data to the user.json file.
  * @param {String} data the complete data to be written to file.
  * @param {Function} callback for calling it to perform the tasks
@@ -177,9 +199,16 @@ const updateUser = function(username, newUserData, callback){
         });
       }
 
-      // If user exists then update the user content
-      users[matchIndex] = Object.assign({}, users[matchIndex], newUserData);
-      writeToFile(JSON.stringify(users, null, 2), callback);
+      // If user exists then update the user content after validation
+      if (validateUserInfo(newUserData)){
+        users[matchIndex] = Object.assign({}, users[matchIndex], newUserData);
+        writeToFile(JSON.stringify(users, null, 2), callback);
+      } else {
+        return callback({
+          "message": "Invalid properties in the payload object",
+          "success": false
+        })
+      }
 
       return true;
   });
