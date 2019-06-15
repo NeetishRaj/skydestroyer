@@ -18,7 +18,7 @@ const errorMessages = {
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({"extended": true}));
-
+app.use(express.static('public'))
 
 app.get("/", (req, res) => {
   debug("Received GET req on baseURL");
@@ -45,7 +45,7 @@ app.post("/users/highscores", (req, res) => {
   });
 });
 
-app.post('/register', (req, res) => {
+app.post('/users', (req, res) => {
   data.isUserExist(req.body.username, (user) => {
     if (user){
       res.json({

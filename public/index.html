@@ -8,7 +8,9 @@
   <meta name="subject" content="Multiplayer online Game">
   <meta name="author" content="Morpheus, morpheus.alive@gmail.com">
   <meta name="copyright" content="Play and Learn">
-  <meta name="url" content="https://sky-destroyer.herokuapp.com">
+  <meta name="url" content="https://sky-defender.herokuapp.com">
+  <script src="./fetch-api.js"></script>
+  <script src="./handler.js"></script>
   <style media="screen">
     body {
       background: skyblue;
@@ -50,7 +52,7 @@
       <h2>Login</h2>
       <div class="">
         <p>Save your High score</p>
-        <p>Game progress will be saved</p>
+        <p>Game progress can be saved</p>
         <p>Comments &amp; Feedbacks enabled</p>
       </div>
     </div>
@@ -65,11 +67,13 @@
   <div class="page loginPage">
     <div class="login pageDiv">
       <h3>Login</h3>
-      <label for="username">Username</label>
-      <input type="text" name="username" value="">
-      <label for="password">Password</label>
-      <input type="password" name="password" value="">
-      <button type="button" name="login" id="login">Login</button>
+      <form class="" name="loginForm" onsubmit="handleUserLogin(e)" >
+        <label for="loginUsername">Username</label>
+        <input type="text" name="loginUsername" value="">
+        <label for="loginPassword">Password</label>
+        <input type="password" name="loginPassword" value="" autocomplete> 
+        <button type="button" name="login" id="login" onclick="login()">Login</button>
+      </form>
     </div>
     <div class="register pageDiv" onclick="smoothScroll(document.querySelector('.registerPage'))">
       <h3>Not registered yet?</h3>
@@ -77,17 +81,18 @@
   </div>
   <div class="page registerPage">
     <h3>Register</h3>
-    <form class="" action="index.html" method="post">
+    <form class="" name="registerForm">
       <label for="name">Name</label>
       <input type="text" name="name" value="">
-      <p class="errorPara" id="nameError">Name must be atleast 3 characters and alphanumeric only</p>
+      <p class="errorPara" id="nameError">Name must be atleast 3 characters and alphabets only</p>
       <label for="username">Username</label>
       <input type="text" name="username" value="">
-      <p class="errorPara" id="usernameError">Username must be 5-20 characters and alphanumeric only</p>
+      <p class="errorPara" id="usernameError">Username must be 5-12 characters and alphanumeric only</p>
       <label for="password">Password</label>
-      <input type="password" name="password" value="">
+      <input type="password" name="password" value="" autocomplete>
       <p class="errorPara" id="passwordError">Password must be 5-20 characters only</p>
-      <input type="submit" name="register" value="Register">
+      <input type="button" name="cancel" value="Cancel" onclick="smoothScroll(document.querySelector('.secondPage'))">
+      <input type="button" name="register" value="Register"  onclick="RH.handleUserRegister(this.parentElement)">
     </form>
   </div>
   <div class="page homePage">
@@ -99,6 +104,9 @@
       <button type="button" name="continue" onclick="smoothScroll(document.querySelector('.gamePage'))">Continue</button>
     </div>
     <div class="homeButton">
+      <button type="button" name="highScores" onclick="smoothScroll(document.querySelector('.highScoresPage'))">High Scores</button>
+    </div>
+    <div class="homeButton">
       <button type="button" name="newGame" onclick="smoothScroll(document.querySelector('.settingPage'))">Settings</button>
     </div>
     <div class="homeButton">
@@ -107,6 +115,13 @@
     <div class="homeButton">
       <button type="button" name="about" onclick="smoothScroll(document.querySelector('.aboutPage'))">About</button>
     </div>
+  </div>
+  <div class="page highScoresPage">
+    <h2>High Scores</h2>
+    <ol>
+      <li> <span id="hsName">Morpheus</span> <span id="hsScore">20000</span> miles</li>
+      <button type="button" name="currentHighScore">Get Realtime Ranking</button>
+    </ol>
   </div>
   <div class="page settingPage">
     <h2>Setting</h2>
@@ -177,32 +192,32 @@ window.smoothScroll = function(target) {
 /*###### PAGE NAVIGATION FUNCTIONS ENDS ######*/
 
 
+/*###### CLIENT SIDE VALIDATION STARTS ######*/
 
-// var httpRequest;
-// document.getElementById("enterGame").addEventListener('click', makeRequest);
-//
-// function makeRequest() {
-//   httpRequest = new XMLHttpRequest();
-//
-//   if (!httpRequest) {
-//     alert('Giving up :( Cannot create an XMLHTTP instance');
-//     return false;
-//   }
-//   httpRequest.open('POST', 'http://localhost:8080/login');
-//     httpRequest .setRequestHeader('Content-Type', 'application/json');
-//   httpRequest.onload = alertContents;
-//   httpRequest.send(JSON.stringify({"password": "Raj"}));
-// }
-//
-// function alertContents() {
-//   if (httpRequest.readyState === XMLHttpRequest.DONE) {
-//     if (httpRequest.status === 200) {
-//       alert(httpRequest.responseText);
-//     } else {
-//       alert('There was a problem with the request.');
-//     }
-//   }
-// }
+/*###### CLIENT SIDE VALIDATION ENDS ######*/
+
+/*###### CLIENT SIDE UTILITY FUNCTIONS STARTS ######*/
+function id(id){
+  return document.getElementById(id);
+}
+/*###### CLIENT SIDE UTILITY FUNCTIONS ENDS ######*/
+function login(){
+  var username  = id('loginUsername').value;
+  var password = id('loginPassword').value;
+
+  if(!isValidInput(username, "username")){
+    alert("Incorrect username, must be 5-12 alphanumeric only");
+    return false;
+  }
+
+  if(!isValidInput(password, "password")){
+    alert("Incorrect password, must be 5-20 characters");
+    return false;
+  }
+}
+
+
+
 
 
 </script>
