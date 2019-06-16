@@ -46,7 +46,7 @@
 <main>
   <div class="page firstPage">
     <h1>SKY DEFENDER</h1>
-    <button type="button" id="enterGame" name="enterGame" onclick="smoothScroll(qs('.secondPage'))">Enter Game</button>
+    <button type="button" id="enterGame" name="enterGame" onclick="RH.openLoginPage()">Enter Game</button>
   </div>
   <div class="page secondPage">
     <div class="loginPart pageDiv" onclick="smoothScroll(qs('.loginPage'))">
@@ -57,7 +57,7 @@
         <p>Comments &amp; Feedbacks enabled</p>
       </div>
     </div>
-    <div class="casualPart pageDiv" onclick="smoothScroll(qs('.menuPage'))">
+    <div class="casualPart pageDiv" onclick="RH.openMenuPage()">
       <h2>Play Casual</h2>
       <div class="">
         <p>Dont want login Drama</p>
@@ -73,7 +73,7 @@
         <input type="text" name="loginUsername" value="">
         <label for="loginPassword">Password</label>
         <input type="password" name="loginPassword" value="" autocomplete> 
-        <button type="button" name="login" id="login" onclick="RH.handleLogin(this.parentElement)">Login</button>
+        <button type="button" name="login" onclick="RH.handleLogin(this.parentElement)">Login</button>
       </form>
     </div>
     <div class="register pageDiv" onclick="smoothScroll(qs('.registerPage'))">
@@ -92,35 +92,41 @@
       <label for="password">Password</label>
       <input type="password" name="password" value="" autocomplete>
       <p class="errorPara" id="passwordError">Password must be 5-20 characters only</p>
-      <input type="button" name="cancel" value="Cancel" onclick="smoothScroll(qs('.secondPage'))">
+      <input type="button" name="cancel" value="Cancel" onclick="RH.openLoginPage()">
       <input type="button" name="register" value="Register"  onclick="RH.handleUserRegister(this.parentElement)">
     </form>
   </div>
   <div class="page menuPage">
-    <h3>SKY DEFENDER</h3>
+    <h3>Welcome Captain <span id="menuPageUserName"></span></h3>
     <div class="menuButton">
-      <button type="button" name="newGame" onclick="smoothScroll(qs('.gamePage'))">New Game</button>
+      <button type="button" id="newGameMenuButton" onclick="smoothScroll(qs('.gamePage'))">New Game</button>
     </div>
     <div class="menuButton">
-      <button type="button" name="continue" onclick="smoothScroll(qs('.gamePage'))">Continue</button>
+      <button type="button" id="continueMenuButton" onclick="smoothScroll(qs('.gamePage'))">Continue</button>
     </div>
     <div class="menuButton">
-      <button type="button" name="highScores" onclick="RH.handleHighScore()">High Scores</button>
+      <button type="button" id="highScoresMenuButton" onclick="RH.handleHighScore()">High Scores</button>
     </div>
     <div class="menuButton">
-      <button type="button" name="newGame" onclick="smoothScroll(qs('.settingPage'))">Settings</button>
+      <button type="button" id="settingsMenuButton" onclick="smoothScroll(qs('.settingPage'))">Settings</button>
     </div>
     <div class="menuButton">
-      <button type="button" name="help" onclick="smoothScroll(qs('.helpPage'))">Help</button>
+      <button type="button" id="helpMenuButton" onclick="smoothScroll(qs('.helpPage'))">Help</button>
     </div>
     <div class="menuButton">
-      <button type="button" name="about" onclick="smoothScroll(qs('.aboutPage'))">About</button>
+      <button type="button" id="aboutMenuButton" onclick="smoothScroll(qs('.aboutPage'))">About</button>
+    </div>
+    <div class="menuButton">
+      <button type="button" id="backToFirstPageMenuButton" onclick="smoothScroll(qs('.firstPage'))">Home Page</button>
+    </div>
+    <div class="menuButton">
+      <button type="button" id="logoutMenuButton" onclick="RH.handleLogout()">Logout</button>
     </div>
   </div>
   <div class="page highScoresPage">
     <h2>High Scores</h2>
     <button type="button" name="currentHighScore" onclick="RH.handleHighScore()">Refresh</button>
-    <button type="button" name="goBack" onclick="smoothScroll(qs('.menuPage'))">Go Back</button>
+    <button type="button" name="goBack" onclick="RH.openMenuPage()">Go Back</button>
     <div>
       <table id="highScoreListTable">
         <thead>
@@ -151,7 +157,7 @@
         <label for="off">OFF</label>
       </div>
     </div>
-    <button type="button" name="goBack" onclick="smoothScroll(qs('.menuPage'))">Go Back</button>
+    <button type="button" name="goBack" onclick="RH.openMenuPage()">Go Back</button>
   </div>
   <div class="page helpPage">
     <h2>Help</h2>
@@ -162,19 +168,19 @@
       <li>Kill enemies when you acquire a Gun</li>
       <li>Dont forget to catch shield, weapons and fuel</li>
     </ul>
-    <button type="button" name="goBack" onclick="smoothScroll(qs('.menuPage'))">Go Back</button>
+    <button type="button" name="goBack" onclick="RH.openMenuPage()">Go Back</button>
   </div>
   <div class="page aboutPage">
     <div class="">
       <h2>About</h2>
-      <p>This game was created by Bobbie for fellow Sololearners</p>
-      <p>When the game got big then Morpheus (Bobbie's best friend) joined in on the development</p>
+      <p>The concept of this game was created by Bobbie</p>
+      <p>When the game got big then Morpheus joined in on the development to help with the Gamification.</p>
     </div>
     <div class="">
-      <h4>Dear Sololearners</h4>
+      <h4>Dear Sololearners,</h4>
       <p>It is still under progress and any feedback from the community will be highly appreciated</p>
-      <p>We love making games if you have some cool ideas then we are just one messgae away from teaming up</p>
-      <button type="button" name="goBack" onclick="smoothScroll(qs('.menuPage'))">Go Back</button>
+      <p>We love making games if you love it as well then we are just one messgae away from teaming up</p>
+      <button type="button" name="goBack" onclick="RH.openMenuPage()">Go Back</button>
     </div>
   </div>
   <div class="page gamePage">

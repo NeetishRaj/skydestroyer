@@ -12,6 +12,31 @@ const DM = (function(){
       } 
   }
 
+  const createElementWithTextNode = function(type, text){
+    let element = document.createElement(type);
+    let textNode = document.createTextNode(text);
+    element.appendChild(textNode);
+    
+    return element;
+  }
+
+  const showElement = function(elem, displayStyle = 'block') {
+    elem.style.display = displayStyle;
+  };
+
+  const hideElement = function (elem) {
+    elem.style.display = 'none';
+  };
+
+  // Toggle element visibility
+  const toggleElement = function(elem, displayStyle = 'block') {
+    if (window.getComputedStyle(elem).display === displayStyle) {
+      hideElement(elem);
+      return;
+    }
+    showElement(elem);
+  };
+
 
   const createScoreList = function(scoreList){
     // ScoreList is an array of objects, where each object consists of name & score
@@ -23,27 +48,18 @@ const DM = (function(){
     for(let i = 0; i < scoreList.length; i++ ){
       let tr = document.createElement('TR');
 
-      let rank = document.createElement('TD');
-      let rankText = document.createTextNode(`${i + 1}`);
-      rank.appendChild(rankText);
-      tr.appendChild(rank);
-
-      let name = document.createElement('TD');
-      let nameText = document.createTextNode(scoreList[i].name);
-      name.appendChild(nameText);
-      tr.appendChild(name);
-
-      let score = document.createElement('TD');
-      let scoreText = document.createTextNode(scoreList[i].highScore);
-      score.appendChild(scoreText);
-      tr.appendChild(score);
-     
+      tr.appendChild(createElementWithTextNode('TD', `${i + 1}`));
+      tr.appendChild(createElementWithTextNode('TD', scoreList[i].name));
+      tr.appendChild(createElementWithTextNode('TD', scoreList[i].highScore));
       tbody.appendChild(tr);
     }
   }
 
   return {
-    createScoreList
+    createScoreList,
+    showElement,
+    hideElement,
+    toggleElement
   }
 
 })();

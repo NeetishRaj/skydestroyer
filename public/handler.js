@@ -3,7 +3,7 @@
 // Request Handlers
 var RH = (function(){
  
-  var userValidateRegex = {
+  let userValidateRegex = {
     "comments": /.+/g,
     "highScore": /^\d+$/,
     "lastProgress": /^\d+$/,
@@ -69,8 +69,9 @@ var RH = (function(){
     Fetch.postData('/login', loginInput)
       .then((response) => {
         if(response.username !== undefined){
-          smoothScroll(qs('.menuPage'));
           window.userToken = response;
+          window.currentUser = Object.assign({}, response);
+          openMenuPage();
         } else {
           alert(response.message);
         }
@@ -78,10 +79,19 @@ var RH = (function(){
       .catch(() => {
         alert("Something might have happened with your Network, Please try again!");
       })
+  };
+
+  const isLoggedIn = function(){
+    return (window.userToken && window.userToken.username)
+      ? true : false;
   }
 
+  const handleLogout = function(form){
+    window.userToken = undefined;
+    openLoginPage();
+  };
+
   const handleHighScore  = function(){
-    
     Fetch.getData('/highscores')
       .then((scoreList) => {
         if(Array.isArray(scoreList) && scoreList.length > 0){
@@ -96,11 +106,33 @@ var RH = (function(){
       })
   }
 
+  const openMenuPage = function(){
+    if (isLoggedIn()){
+      id('menuPageUserName').textContent = window.currentUser.name;
+      DM.showElement(id('continueMenuButton'), 'inline-block');
+    } else {
+      id('menuPageUserName').textContent = "";
+      DM.hideElement(id('continueMenuButton'));
+    }
+    smoothScroll(qs('.menuPage'))
+  }
+
+  const openLoginPage = function(){
+    if (isLoggedIn()){
+      openMenuPage();
+    } else {
+      smoothScroll(qs('.secondPage'))
+    }
+  }
+
 
   return {
     handleUserRegister,
     handleLogin,
-    handleHighScore
+    handleLogout,
+    handleHighScore,
+    openMenuPage,
+    openLoginPage
   }
 
 })()
