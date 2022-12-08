@@ -18,7 +18,7 @@
     "body-parser": "^1.18.3",
     "cors": "^2.8.4",
     "debug": "^3.1.0",
-    "express": "^4.16.3"
+    "express": "^4.17.3"
   },
   "devDependencies": {
     "eslint-config-google": "^0.9.1"
